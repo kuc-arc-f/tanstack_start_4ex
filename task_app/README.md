@@ -48,4 +48,7 @@ https://tanstack.com/start/latest/docs/framework/react/getting-started
 EXTERNAL_API_URL: "http://localhost:8080",
 ```
 ***
+### blog
+
+https://zenn.dev/knaka0209/scraps/5ff47b8ac463eb
 
