@@ -200,36 +200,6 @@ export default function RouteComponent() {
   const [showUserPopover, setShowUserPopover] = useState(false);
   const [statusToast, setStatusToast] = useState<string | null>(null);
 
-  /* ---------- localStorage への自動保存 ---------- */
-
-  useEffect(() => {
-    try {
-      //localStorage.setItem(STORAGE_KEYS.POSTS, JSON.stringify(posts));
-    } catch (e) {
-      console.error('Failed to save posts to localStorage:', e);
-    }
-  }, [posts]);
-
-  useEffect(() => {
-    try {
-      //localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
-    } catch (e) {
-      console.error('Failed to save settings to localStorage:', e);
-    }
-  }, [settings]);
-
-  useEffect(() => {
-    try {
-      if (selectedPostId !== null) {
-        //localStorage.setItem(STORAGE_KEYS.SELECTED_ID, String(selectedPostId));
-      } else {
-        //localStorage.removeItem(STORAGE_KEYS.SELECTED_ID);
-      }
-    } catch (e) {
-      console.error('Failed to save selectedPostId:', e);
-    }
-  }, [selectedPostId]);
-
   const triggerToast = useCallback((message: string) => {
     setStatusToast(message);
     window.setTimeout(() => {
@@ -456,7 +426,7 @@ export default function RouteComponent() {
             </span>
           )}
           <span className="text-xs text-slate-500 tabular-nums whitespace-nowrap">
-            LocalStorage 保存中 ({posts.length}件)
+            保存中 ({posts.length}件)
           </span>
         </div>
       </header>
