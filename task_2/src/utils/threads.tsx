@@ -20,7 +20,7 @@ export const threadFetch = createServerFn({ method: 'POST' }).handler(async({dat
   ,"Thread".body
   ,"Thread"."createdAt"
   ,"Thread"."updatedAt"
-  ,"User".name as user_name
+  ,"User".name
   FROM Thread
   INNER JOIN "ChatPost" ON
   ("Thread".chatPostId = "ChatPost".id)        
@@ -31,11 +31,10 @@ export const threadFetch = createServerFn({ method: 'POST' }).handler(async({dat
   LIMIT 1000
   `;       
   const sendData = {
-    action_name: "select",
-    table: "Thread",
+    action_name: "ex_chat_thread_list",
     sql: sql,
   };  
-  const response = await fetch(Config.EXTERNAL_API_URL + "/api/select", {
+  const response = await fetch(Config.EXTERNAL_API_URL + "/api/extra", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

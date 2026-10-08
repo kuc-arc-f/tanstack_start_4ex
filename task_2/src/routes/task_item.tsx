@@ -12,6 +12,7 @@ import { TaskCard } from '../components/task_item/TaskCard';
 import { AnimatePresence, motion } from 'motion/react';
 import Container from '../components/Container'
 import TaskHelper from "../components/task_item/TaskHelper"
+import LibAuth from "../lib/LibAuth"
 
 let projectId = 0;
 
@@ -34,6 +35,10 @@ export default function RouteComponent() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
+  useEffect(() => {
+    LibAuth.isValidLogin();
+  }, []);
+    
   const getTaskList = async() => {
     try{
       const resp = await fetchPosts({ data: {projectId: projectId} })

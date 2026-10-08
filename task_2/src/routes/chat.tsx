@@ -23,6 +23,8 @@ import {
 import { formatDateTime, formatTodayDate } from '../components/chat/format';
 import { fetchPosts, createPost , deletePost , updatePost } from '../utils/chat_posts'
 import { threadFetch, threadCreate , threadDelete } from '../utils/threads'
+import LibAuth from "../lib/LibAuth"
+import Config from "../config"
 
 let chatId = 0;
 let userId = 0;
@@ -106,21 +108,26 @@ export default function RouteComponent() {
   const [posts, setPosts] = useState<ChatPost[]>([]);
   const [threads, setThreads] = useState([]);
 
+  useEffect(() => {
+    LibAuth.isValidLogin();
+    userId = LibAuth.getCookieValue(Config.COOKIE_KEY_UID)
+  }, []);
+    
   const setThreadData = async function (post_id) {
     try{
       const item = await threadFetch({ data: {chatPostId: post_id} });
-      console.log(item);
       const target = [];
       item.forEach((element, index) => {
         let row = {
-          id: element.thread_id,
+          id: element.id,
           postId: element.chatPostId,
-          author: "User31",
+          author: element.name,
           content: element.body,
           createdAt: element.createdAt,
         }
         target.push(row)
       })
+      console.log(target);
       setThreads(target)
     }catch(e){console.log(e)}
   }
@@ -138,7 +145,7 @@ export default function RouteComponent() {
           //console.log(element);
           let row = {
             id: element.id,
-            author: "User21",
+            author: element.name,
             content: element.body,
             createdAt: element.createdAt,
             bookmarked:false,
@@ -334,6 +341,8 @@ export default function RouteComponent() {
 
   const handleDeletePost = async (postId: number, e: React.MouseEvent) => {
     e.stopPropagation();
+    const isOk = confirm("delete ok ?");
+    if (isOk === false) { return; }
     await deletePost({data: {id: postId}})
     await fetchChatPost();
     triggerToast(`投稿 (ID: ${postId}) を削除しました`);

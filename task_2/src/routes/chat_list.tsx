@@ -7,6 +7,7 @@ import {
 import { fetchPosts, createPost , deletePost } from '../utils/chat'
 import Head from "../components/Head"
 import LibConfig from "../lib/LibConfig"
+import LibAuth from "../lib/LibAuth"
 
 export const Route = createFileRoute('/chat_list')({
   component: PostsComponent,
@@ -27,6 +28,10 @@ export default function PostsComponent() {
   const [editingBookmark, setEditingBookmark] = useState<Bookmark | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
+  useEffect(() => {
+    LibAuth.isValidLogin();
+  }, []);
+  
   const fetchTodos = async () => {
     try {
       const data = await fetchPosts();

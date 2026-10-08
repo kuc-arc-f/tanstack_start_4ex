@@ -15,8 +15,10 @@ import { Route as ChatRouteImport } from './routes/chat'
 import { Route as Chat_listRouteImport } from './routes/chat_list'
 import { Route as CustomScriptDotjsRouteImport } from './routes/customScript[.]js'
 import { Route as DeferredRouteImport } from './routes/deferred'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as ProjectRouteImport } from './routes/project'
 import { Route as RedirectRouteImport } from './routes/redirect'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as Task_itemRouteImport } from './routes/task_item'
 import { Route as PathlessLayoutNestedLayoutRouteImport } from './routes/_pathlessLayout/_nested-layout'
 import { Route as PathlessLayoutNestedLayoutRouteARouteImport } from './routes/_pathlessLayout/_nested-layout/route-a'
@@ -51,6 +53,11 @@ const DeferredRoute = DeferredRouteImport.update({
   path: '/deferred',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProjectRoute = ProjectRouteImport.update({
   id: '/project',
   path: '/project',
@@ -59,6 +66,11 @@ const ProjectRoute = ProjectRouteImport.update({
 const RedirectRoute = RedirectRouteImport.update({
   id: '/redirect',
   path: '/redirect',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Task_itemRoute = Task_itemRouteImport.update({
@@ -90,8 +102,10 @@ export interface FileRoutesByFullPath {
   '/chat_list': typeof Chat_listRoute
   '/customScript.js': typeof CustomScriptDotjsRoute
   '/deferred': typeof DeferredRoute
+  '/login': typeof LoginRoute
   '/project': typeof ProjectRoute
   '/redirect': typeof RedirectRoute
+  '/signup': typeof SignupRoute
   '/task_item': typeof Task_itemRoute
   '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
   '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
@@ -102,8 +116,10 @@ export interface FileRoutesByTo {
   '/chat_list': typeof Chat_listRoute
   '/customScript.js': typeof CustomScriptDotjsRoute
   '/deferred': typeof DeferredRoute
+  '/login': typeof LoginRoute
   '/project': typeof ProjectRoute
   '/redirect': typeof RedirectRoute
+  '/signup': typeof SignupRoute
   '/task_item': typeof Task_itemRoute
   '/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
   '/route-b': typeof PathlessLayoutNestedLayoutRouteBRoute
@@ -116,8 +132,10 @@ export interface FileRoutesById {
   '/chat_list': typeof Chat_listRoute
   '/customScript.js': typeof CustomScriptDotjsRoute
   '/deferred': typeof DeferredRoute
+  '/login': typeof LoginRoute
   '/project': typeof ProjectRoute
   '/redirect': typeof RedirectRoute
+  '/signup': typeof SignupRoute
   '/task_item': typeof Task_itemRoute
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/_pathlessLayout/_nested-layout/route-a': typeof PathlessLayoutNestedLayoutRouteARoute
@@ -131,8 +149,10 @@ export interface FileRouteTypes {
     | '/chat_list'
     | '/customScript.js'
     | '/deferred'
+    | '/login'
     | '/project'
     | '/redirect'
+    | '/signup'
     | '/task_item'
     | '/route-a'
     | '/route-b'
@@ -143,8 +163,10 @@ export interface FileRouteTypes {
     | '/chat_list'
     | '/customScript.js'
     | '/deferred'
+    | '/login'
     | '/project'
     | '/redirect'
+    | '/signup'
     | '/task_item'
     | '/route-a'
     | '/route-b'
@@ -156,8 +178,10 @@ export interface FileRouteTypes {
     | '/chat_list'
     | '/customScript.js'
     | '/deferred'
+    | '/login'
     | '/project'
     | '/redirect'
+    | '/signup'
     | '/task_item'
     | '/_pathlessLayout/_nested-layout'
     | '/_pathlessLayout/_nested-layout/route-a'
@@ -171,8 +195,10 @@ export interface RootRouteChildren {
   Chat_listRoute: typeof Chat_listRoute
   CustomScriptDotjsRoute: typeof CustomScriptDotjsRoute
   DeferredRoute: typeof DeferredRoute
+  LoginRoute: typeof LoginRoute
   ProjectRoute: typeof ProjectRoute
   RedirectRoute: typeof RedirectRoute
+  SignupRoute: typeof SignupRoute
   Task_itemRoute: typeof Task_itemRoute
 }
 
@@ -220,6 +246,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DeferredRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/project': {
       id: '/project'
       path: '/project'
@@ -232,6 +265,13 @@ declare module '@tanstack/react-router' {
       path: '/redirect'
       fullPath: '/redirect'
       preLoaderRoute: typeof RedirectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/task_item': {
@@ -302,8 +342,10 @@ const rootRouteChildren: RootRouteChildren = {
   Chat_listRoute: Chat_listRoute,
   CustomScriptDotjsRoute: CustomScriptDotjsRoute,
   DeferredRoute: DeferredRoute,
+  LoginRoute: LoginRoute,
   ProjectRoute: ProjectRoute,
   RedirectRoute: RedirectRoute,
+  SignupRoute: SignupRoute,
   Task_itemRoute: Task_itemRoute,
 }
 export const routeTree = rootRouteImport

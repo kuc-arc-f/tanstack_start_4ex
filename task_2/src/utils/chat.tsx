@@ -27,7 +27,7 @@ export const fetchPosts = createServerFn().handler(async () => {
   }
   const result = await response.json();
   const resp = JSON.parse(result.data)
-  //console.log(resp.data);
+  console.log(resp.data);
   return resp.data;
 })
 

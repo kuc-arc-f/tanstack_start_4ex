@@ -17,7 +17,7 @@ export const fetchPosts = createServerFn({ method: 'POST' }).handler(async({data
   ,"ChatPost".body
   ,"ChatPost"."createdAt"
   ,"ChatPost"."updatedAt"
-  ,"User".name as user_name
+  ,"User".name
   FROM ChatPost
   LEFT OUTER JOIN "User" ON
   ("User".id = "ChatPost"."userId")
@@ -26,11 +26,10 @@ export const fetchPosts = createServerFn({ method: 'POST' }).handler(async({data
   LIMIT 1000    
   `;    
   const sendData = {
-    action_name: "select",
-    table: "ChatPost",
+    action_name: "ex_chat_post_list",
     sql: sql,
   };  
-  const response = await fetch(Config.EXTERNAL_API_URL + "/api/select", {
+  const response = await fetch(Config.EXTERNAL_API_URL + "/api/extra", {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -42,7 +41,7 @@ export const fetchPosts = createServerFn({ method: 'POST' }).handler(async({data
   }
   const result = await response.json();
   const resp = JSON.parse(result.data)
-  //console.log(resp.data);
+  console.log(resp.data);
   return resp.data;
 })
 
