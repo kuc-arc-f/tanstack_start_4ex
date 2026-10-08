@@ -10,7 +10,7 @@ const LibAuth = {
 
   getCookieValue: function (key) {
     const cookies = document.cookie.split('; ');
-    console.log(cookies);
+    //console.log(cookies);
     for (let cookie of cookies) {
         const [name, value] = cookie.split('=');
         if (name === key) {
@@ -22,7 +22,7 @@ const LibAuth = {
 
   isValidLogin: function () {
     const value = this.getCookieValue(Config.COOKIE_KEY_UID)
-    console.log("value=", value);
+    //console.log("value=", value);
     if(!value){
       location.href = "/login";
     }

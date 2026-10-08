@@ -28,6 +28,7 @@ import Config from "../config"
 
 let chatId = 0;
 let userId = 0;
+let chatPostId = 0;
 const DEFAULT_AUTHOR = 'User21';
 
 /* ---------- 左サイドバーのナビゲーションボタン（共通UI） ---------- */
@@ -107,13 +108,49 @@ export const Route = createFileRoute('/chat')({
 export default function RouteComponent() {
   const [posts, setPosts] = useState<ChatPost[]>([]);
   const [threads, setThreads] = useState([]);
+  const [selectedPostMenu, setSelectedPostMenu] = useState('apple');
 
   useEffect(() => {
     LibAuth.isValidLogin();
     userId = LibAuth.getCookieValue(Config.COOKIE_KEY_UID)
   }, []);
     
-  const setThreadData = async function (post_id) {
+  const postMenuhandleChange = async (e) => {
+    setSelectedPostMenu(e.target.value);
+    console.log('選択された値:', e.target.value);
+    if(e.target.value === "copy-url"){
+      let currentUrl = window.location.href;
+      if (currentUrl.includes("&post_id=")) {
+        currentUrl = currentUrl.substring(0, currentUrl.indexOf("&post_id="));
+      }
+      if (!currentUrl.includes("post_id=")) {
+        currentUrl = currentUrl + "&post_id=" + selectedPostId
+      }
+      console.log("currentUrl=", currentUrl);      
+      try {
+        await navigator.clipboard.writeText(currentUrl);
+        setTimeout(() => {
+          setSelectedPostMenu("");
+        }, 500);         
+      } catch (err) {
+        console.error('コピーに失敗しました:', err);
+      }
+    }
+    if(e.target.value === "copy-text"){
+      if(selectedPost){
+        console.log("content=", selectedPost.content)
+        try {
+          await navigator.clipboard.writeText(selectedPost.content);
+          setTimeout(() => {
+            setSelectedPostMenu("");
+          }, 500);         
+        } catch (err) {
+          console.error('コピーに失敗しました:', err);
+        }        
+      }
+    }
+  };
+    const setThreadData = async function (post_id) {
     try{
       const item = await threadFetch({ data: {chatPostId: post_id} });
       const target = [];
@@ -137,7 +174,12 @@ export default function RouteComponent() {
         const searchParams = new URLSearchParams(window.location.search);
         const id_str = searchParams.get('chat_id') || "";
         chatId = Number(id_str);
+        const post_id = searchParams.get('post_id') || "";
         console.log("chatId=", chatId )
+        if(post_id){
+          chatPostId = Number(post_id);
+          console.log("chatPostId=", chatPostId )
+        }
         const items = await fetchPosts({ data: {chatId: chatId} })
         console.log(items)
         const out_item = [];
@@ -153,10 +195,26 @@ export default function RouteComponent() {
           }
           out_item.push(row)
         });        
-        if(out_item.length > 0){
-          console.log(out_item[0]);
-          setSelectedPostId(out_item[0].id);
-          await setThreadData(out_item[0].id);
+        
+        if(chatPostId && chatPostId > 0){
+          setTimeout(() => {
+            console.log("chatPostId > 0 , chatPostId=", chatPostId )
+            //const found = array.find((element) => element > 10);
+            const target = out_item.find((p) => p.id === chatPostId)
+            console.log("#selectedPost=" + chatPostId)
+            //console.log(posts)            
+            console.log("#target=")
+            console.log(target)            
+            setSelectedPostId(chatPostId);
+            //setSelectedPost(target)
+            setThreadData(chatPostId);
+          }, 500);          
+        }else{
+          if(out_item.length > 0){
+            console.log(out_item[0]);
+            setSelectedPostId(out_item[0].id);
+            await setThreadData(out_item[0].id);
+          }
         }
         setPosts(out_item)
     } catch (error) {
@@ -181,6 +239,7 @@ export default function RouteComponent() {
 
   */
   const [selectedPostId, setSelectedPostId] = useState(0);
+  //const [selectedPost, setSelectedPost] = useState({});
 
   const [activeNav, setActiveNav] = useState<ActiveNav>('Dashboard');
 
@@ -235,9 +294,12 @@ export default function RouteComponent() {
 
   // Currently selected post object
   const selectedPost = useMemo(() => {
+    const target = posts.find((p) => p.id === selectedPostId)
+    console.log("#selectedPost=" + selectedPostId)
+    console.log(target)
     return (
       posts.find((p) => p.id === selectedPostId) ||
-      filteredPosts[0] ||
+      //filteredPosts[0] ||
       posts[0] ||
       null
     );
@@ -373,7 +435,7 @@ export default function RouteComponent() {
   const handleResetDemoData = () => {
     setPosts(INITIAL_POSTS);
     setSettings(INITIAL_SETTINGS);
-    setSelectedPostId(INITIAL_POSTS[0].id);
+    //setSelectedPostId(INITIAL_POSTS[0].id);
     setSearchInput('');
     setAppliedSearchKey('');
     triggerToast('初期サンプルデータを復元しました');
@@ -716,6 +778,8 @@ export default function RouteComponent() {
                     setActiveNav('Dashboard');
                   }}
                   setThreadData={setThreadData}
+                  postMenuhandleChange={postMenuhandleChange}
+                  selectedPostMenu={selectedPostMenu}
                 />
               </div>
 

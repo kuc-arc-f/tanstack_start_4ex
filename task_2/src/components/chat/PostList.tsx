@@ -36,6 +36,8 @@ export default function PostList({
   onDelete,
   onResetView,
   setThreadData,
+  postMenuhandleChange,
+  selectedPostMenu,
 }: PostListProps) {
   if (posts.length === 0) {
     return (
@@ -55,6 +57,7 @@ export default function PostList({
       </div>
     );
   }
+  //console.log("PostList.selectedPostId=", selectedPostId)
 
   return (
     <div className="space-y-3.5">
@@ -91,7 +94,7 @@ export default function PostList({
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-slate-700 line-clamp-2 whitespace-pre-wrap break-words">
+                <p className="text-sm text-slate-700 line-clamp-6 whitespace-pre-wrap break-words">
                   {post.content}
                 </p>
               </div>
@@ -124,6 +127,18 @@ export default function PostList({
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
+                {/* menu-copy */}
+                <select
+                  value={selectedPostMenu}
+                  onChange={postMenuhandleChange}
+                  className="w-18 px-2 py-1 bg-white text-sm text-gray-400 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">menu</option>
+                  <option value="copy-url">copy URL</option>
+                  <option value="copy-text">copy Text</option>
+                </select>
+
+
               </div>
             </div>
 
