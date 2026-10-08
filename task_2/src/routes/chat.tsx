@@ -751,7 +751,8 @@ export default function RouteComponent() {
 
               {/* RIGHT COLUMN (右枠: 投稿テキスト表示 & 返信スレッド登録・一覧) */}
               <div className="lg:col-span-5 lg:sticky lg:top-16">
-                <div className="bg-[#E2E4E8] border border-slate-500 p-5 min-h-[540px] flex flex-col justify-between gap-5">
+                {/* bg-[#E2E4E8] border border-slate-500 p-5 min-h-[840px] */}
+                <div className="bg-[#E2E4E8] border border-slate-500 p-5 min-h-full flex flex-col justify-between gap-5">
                   {selectedPost ? (
                     <div className="space-y-4">
                       {/* Header metadata above the white post text box */}

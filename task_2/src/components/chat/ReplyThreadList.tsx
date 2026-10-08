@@ -33,7 +33,8 @@ export default function ReplyThreadList({
           まだ返信スレッドはありません。上の入力欄から「Reply」で返信を登録できます。
         </div>
       ) : (
-        <div className="space-y-2 max-h-[280px] overflow-y-auto pr-1">
+        <div className="space-y-2 max-h-full overflow-y-auto pr-1">
+          {/* max-h-[480px] */}
           {replies.map((reply) => (
             <div
               key={reply.id}

@@ -136,8 +136,10 @@ export default function PostList({
                 {post.createdAt} , ID: {post.id}
               </span>
               <span className="text-xs text-slate-500 flex items-center gap-1">
+                {/*
                 <MessageSquare className="w-3.5 h-3.5" />
                 <span>返信 {post.replies.length}件</span>
+                */}
               </span>
             </div>
 
