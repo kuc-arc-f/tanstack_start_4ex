@@ -25,6 +25,7 @@ import { fetchPosts, createPost , deletePost , updatePost } from '../utils/chat_
 import { threadFetch, threadCreate , threadDelete } from '../utils/threads'
 import LibAuth from "../lib/LibAuth"
 import Config from "../config"
+import LibChatPost from "../components/chat/LibChatPost"
 
 let chatId = 0;
 let userId = 0;
@@ -113,43 +114,17 @@ export default function RouteComponent() {
   useEffect(() => {
     LibAuth.isValidLogin();
     userId = LibAuth.getCookieValue(Config.COOKIE_KEY_UID)
+    console.log("userId=", userId)
   }, []);
     
   const postMenuhandleChange = async (e) => {
     setSelectedPostMenu(e.target.value);
+    await LibChatPost.postMenuHandle(
+      e.target.value, selectedPost, selectedPostId, setSelectedPostMenu
+    );
     console.log('選択された値:', e.target.value);
-    if(e.target.value === "copy-url"){
-      let currentUrl = window.location.href;
-      if (currentUrl.includes("&post_id=")) {
-        currentUrl = currentUrl.substring(0, currentUrl.indexOf("&post_id="));
-      }
-      if (!currentUrl.includes("post_id=")) {
-        currentUrl = currentUrl + "&post_id=" + selectedPostId
-      }
-      console.log("currentUrl=", currentUrl);      
-      try {
-        await navigator.clipboard.writeText(currentUrl);
-        setTimeout(() => {
-          setSelectedPostMenu("");
-        }, 500);         
-      } catch (err) {
-        console.error('コピーに失敗しました:', err);
-      }
-    }
-    if(e.target.value === "copy-text"){
-      if(selectedPost){
-        console.log("content=", selectedPost.content)
-        try {
-          await navigator.clipboard.writeText(selectedPost.content);
-          setTimeout(() => {
-            setSelectedPostMenu("");
-          }, 500);         
-        } catch (err) {
-          console.error('コピーに失敗しました:', err);
-        }        
-      }
-    }
   };
+
     const setThreadData = async function (post_id) {
     try{
       const item = await threadFetch({ data: {chatPostId: post_id} });
@@ -270,6 +245,8 @@ export default function RouteComponent() {
 
   // Filtered posts based on sidebar navigation and search query
   const filteredPosts = useMemo(() => {
+    //console.log("#filteredPosts");
+    //console.log(posts);
     return posts.filter((post) => {
       if (activeNav === 'Thread' && post.replies.length === 0) {
         return false;
