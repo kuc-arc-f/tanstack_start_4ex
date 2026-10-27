@@ -34,3 +34,7 @@ EXTERNAL_API_URL: "http://localhost:8888",
 ```
 
 ***
+### blog
+
+https://zenn.dev/knaka0209/scraps/e703f4a3849834
+
